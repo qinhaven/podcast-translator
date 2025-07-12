@@ -4,3 +4,5 @@ __pycache__/
 *.wav
 *.mp3
 .DS_Store
+notes.txt
+huberman_sleep_transcript.txt
