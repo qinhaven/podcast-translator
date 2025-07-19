@@ -8,8 +8,14 @@ client = OpenAI(api_key=api_key)
 
 def translate_text_to_chinese(text: str, model="gpt-4o-mini") -> str:
     """
-    Translates English text to Chinese using OpenAI's Chat API.
-    Returns the translated text as a string.
+    Translates English text into fluent Mandarin using GPT.
+
+    Args:
+        text (str): The English text to translate.
+        model (str): OpenAI model to use ("gpt-4o-mini", "gpt-4o", etc).
+
+    Returns:
+        str: Translated Mandarin Chinese text.
     """
 
     system_prompt = "You are a professional translator. Translate the following English text into natural, fluent Mandarin Chinese."
@@ -28,20 +34,20 @@ def translate_text_to_chinese(text: str, model="gpt-4o-mini") -> str:
     return response.choices[0].message.content
 
 
-def translate_file(input_path: str, output_path: str):
-    """
-    Reads a text file, translates it to Chinese, and writes the result.
-    """
-    if not os.path.exists(input_path):
-        raise FileNotFoundError(f"Input file not found: {input_path}")
+# def translate_file(input_path: str, output_path: str):
+#     """
+#     Reads a text file, translates it to Chinese, and writes the result.
+#     """
+#     if not os.path.exists(input_path):
+#         raise FileNotFoundError(f"Input file not found: {input_path}")
 
-    with open(input_path, "r", encoding="utf-8") as f:
-        english_text = f.read()
+#     with open(input_path, "r", encoding="utf-8") as f:
+#         english_text = f.read()
 
-    print("Translating to Chinese...")
-    chinese_text = translate_text_to_chinese(english_text)
+#     print("Translating to Chinese...")
+#     chinese_text = translate_text_to_chinese(english_text)
 
-    with open(output_path, "w", encoding="utf-8") as f:
-        f.write(chinese_text)
+#     with open(output_path, "w", encoding="utf-8") as f:
+#         f.write(chinese_text)
 
-    print(f"Translation saved to: {output_path}")
+#     print(f"Translation saved to: {output_path}")

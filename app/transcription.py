@@ -1,7 +1,7 @@
 import whisper
 import os
 
-def transcribe_audio(file_path: str, model_size: "small") -> str:
+def transcribe_audio(file_path: str, model_size: str = "small") -> str:
     """
     Transcribe an audio file into English text using Whisper.
     

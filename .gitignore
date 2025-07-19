@@ -3,7 +3,6 @@ __pycache__/
 .env
 *.wav
 *.mp3
+*.txt
 .DS_Store
-notes.txt
-huberman_sleep_transcript.txt
-huberman_sleep_transcript_zh.txt
+!requirements.txt
