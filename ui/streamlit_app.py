@@ -1,5 +1,10 @@
-import streamlit as st
+import sys
 import os
+
+# Add root directory to Python path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+import streamlit as st
 from app.transcription import transcribe_audio
 from app.translation import translate_text_to_chinese
 from app.tts import synthesize_speech
