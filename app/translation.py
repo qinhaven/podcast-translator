@@ -1,10 +1,9 @@
 from dotenv import load_dotenv
 import os
 from openai import OpenAI
+import time
 
 load_dotenv()
-api_key = os.getenv("OPENAI_API_KEY")
-client = OpenAI(api_key=api_key)
 
 def translate_text_to_chinese(text: str, model="gpt-4o-mini") -> str:
     """
@@ -16,38 +15,40 @@ def translate_text_to_chinese(text: str, model="gpt-4o-mini") -> str:
 
     Returns:
         str: Translated Mandarin Chinese text.
+        
+    Raises:
+        ValueError: If text is empty or invalid
+        RuntimeError: If API key is missing or invalid
+        Exception: For other API or network errors
     """
+    
+    # Validate input
+    if not text or not text.strip():
+        raise ValueError("Text cannot be empty")
+    
+    # Check API key
+    api_key = os.getenv("OPENAI_API_KEY")
+    if not api_key:
+        raise RuntimeError("OPENAI_API_KEY not found in environment variables")
+    
+    try:
+        # Create client
+        client = OpenAI(api_key=api_key)
+        
+        system_prompt = "You are a professional translator. Translate the following English text into natural, fluent Mandarin Chinese."
 
-    system_prompt = "You are a professional translator. Translate the following English text into natural, fluent Mandarin Chinese."
+        messages = [
+            {"role": "system", "content": system_prompt},
+            {"role": "user", "content": text}
+        ]
 
-    messages = [
-        {"role": "system", "content": system_prompt},
-        {"role": "user", "content": text}
-    ]
+        response = client.chat.completions.create(
+            model=model,
+            messages=messages,
+            temperature=0.3
+        )
 
-    response = client.chat.completions.create(
-        model=model,
-        messages=messages,
-        temperature=0.3
-    )
-
-    return response.choices[0].message.content
-
-
-# def translate_file(input_path: str, output_path: str):
-#     """
-#     Reads a text file, translates it to Chinese, and writes the result.
-#     """
-#     if not os.path.exists(input_path):
-#         raise FileNotFoundError(f"Input file not found: {input_path}")
-
-#     with open(input_path, "r", encoding="utf-8") as f:
-#         english_text = f.read()
-
-#     print("Translating to Chinese...")
-#     chinese_text = translate_text_to_chinese(english_text)
-
-#     with open(output_path, "w", encoding="utf-8") as f:
-#         f.write(chinese_text)
-
-#     print(f"Translation saved to: {output_path}")
+        return response.choices[0].message.content
+        
+    except Exception as e:
+        raise Exception(f"Translation failed: {str(e)}")
